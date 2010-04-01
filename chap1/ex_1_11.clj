@@ -1,7 +1,7 @@
 (ns sicp-in-clojure.chap1.ex-1-11
   (:use clojure.contrib.repl-utils))
 
-;recursive soluion
+;recursive solution
 (defn ex111[n]
   (if (< n 3)
     n
