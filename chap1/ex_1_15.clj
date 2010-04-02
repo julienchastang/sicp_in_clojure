@@ -26,4 +26,4 @@
 ; Since it is recursive (and not tail recursive)
 ; and we are dividing by 3 at each iteration,
 ; space consumption will be proportional to log3 n
-; steps will be proportional to log 3 n as well.
+; steps will be proportional to log 3n as well.
