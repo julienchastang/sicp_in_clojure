@@ -5,7 +5,7 @@
   (let [m {1 1 2 5 3 10 4 25 5 50}]
     (m kinds-of-coins)))
 
-;global 
+;counter is global
 (def counter (ref 0))
 
 (defn cc[amount kinds-of-coins]
@@ -41,8 +41,9 @@
 (cc-1 0 1)
 
 ;The tree can be found here:
+; http://github.com/julienchastang/sicp_in_clojure/blob/master/chap1/ex_1_14.png
 ;
-;
+
 
 ; orders of growth of the space and number of 
 ; steps used by this process as the amount to
