@@ -2,4 +2,4 @@
   (:use clojure.contrib.math))
 
 ;See exercise 17.
-;ttp://github.com/julienchastang/sicp_in_clojure/blob/master/chap1/ex_1_17.clj
+;http://github.com/julienchastang/sicp_in_clojure/blob/master/chap1/ex_1_17.clj
