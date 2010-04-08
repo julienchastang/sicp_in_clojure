@@ -1,7 +1,7 @@
 (ns sicp-in-clojure.chap1.ex-1-22
   (:use clojure.contrib.math))
 
-;From Stu Halloway's book.
+; From Stu Halloway's book.
 (defmacro bench [expr]
   `(let [start# (System/nanoTime)
 	 result# ~expr]
@@ -48,6 +48,6 @@
 (search-for-primes 1000000)
 ;((1000003 107000) (1000033 101000) (1000037 101000))
 
-;These data show  the order of growth is roughly Θ(√n)
-;Increasing by a factor of 10 leads to √10 (3.16) growth
-;in time approximately.
+; These data show the order of growth is roughly Θ(√n)
+; Increasing by a factor of 10 leads to √10 (3.16) growth
+; in time approximately.
