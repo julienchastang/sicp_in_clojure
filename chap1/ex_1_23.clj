@@ -1,4 +1,4 @@
-(ns sicp-in-clojure.chap1.ex-1-22
+(ns sicp-in-clojure.chap1.ex-1-23
   (:use clojure.contrib.math))
 
 ;From Stu Halloway's book.
@@ -52,9 +52,7 @@
 (search-for-primes 1000000)
 ;((1000003 69000) (1000033 61000) (1000037 63000))
 
-; As the numbers get larger in size, we get closer
-; to a factor of 2 improvement. Perhaps, this behavior
-; can be explained by the my-next function which initially
-; gives a performance penalty since there is extra
-; work done to get to the next number. That penalty
-; fades away as the numbers get larger.
+; This version of search_for_primes is indeed faster
+; compared to ex_1_22.clj. Because the problem is
+; growing proportional to √n, then the my-next
+; function should provide a speedup up of √(n/2).
