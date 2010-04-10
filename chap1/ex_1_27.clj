@@ -10,9 +10,8 @@
 	:else (mod (* base (expmod base (- exp 1) m))  m)))
 
 (defn prime?[n]
-  (not-any? false? (map #(= (expmod % n n) (mod % n))
+  (every? true? (map #(= (expmod % n n) (mod % n))
 			(range 0 n))))
-
 
 ;11 12 are positive and negative controls
 (map #(prime? %) [11 12 561 1105 1729 2465 2821 6601])
