@@ -9,3 +9,5 @@
 
 (defn sum-integer[a b]
   (sum-iter identity a inc b))
+
+(sum-integer 1 10)
