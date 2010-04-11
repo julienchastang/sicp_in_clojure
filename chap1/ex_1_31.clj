@@ -12,7 +12,7 @@
   (let[my-a (if (= a 0) 1 a)]
      (product-iter identity my-a inc b 1)))
 
-(factorial 0 5)
+(factorial 1 5)
 
 ;pi calc
 (defn term[x]
@@ -37,4 +37,4 @@
   (let[my-a (if (= a 0) 1 a)]
     (product-recurse identity my-a inc b)))
 
-(factorial-2 0 5)
+(factorial-2 1 5)
