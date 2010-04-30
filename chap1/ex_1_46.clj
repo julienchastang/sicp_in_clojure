@@ -1,7 +1,6 @@
 (ns sicp-in-clojure.chap1.ex-1-46
   (:use clojure.contrib.repl-utils))
 
-
 ; I solved this exercise through partial functions.
 ; I am not sure this is what Abelson & Sussman
 ; had in mind.
@@ -27,6 +26,6 @@
 (defn partial-improve[x]
   (partial (fn[x y] (average [y (/ x y)])) x))
 
-(defn sqrt[x] (iterative-improve (partial-good-enough x)  (partial-improve x) 1.0))
+(defn sqrt[x] (iterative-improve (partial-good-enough x)  (partial-improve x) 1))
 
 (sqrt 100)
