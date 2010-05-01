@@ -9,7 +9,7 @@
 (defn normalize-rat [n d]
   (cond (and (< n 0) (< d 0)) (list (- n) (- d))
 	(< d 0) (list (- n) (- d))
-	:esle (list n d)))
+	:else (list n d)))
 
 (defn make-rat[n d]
   (let [g (my-gcd n d)]
