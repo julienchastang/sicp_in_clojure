@@ -73,9 +73,8 @@
 ; Experimentation shows that smaller percentages lead to closer answers between par1 and par2.
 
 ; par1 and par2 are algebraically equivalent. But we are doing interval math here where
-; sucessive operations introduce additional uncetainty. One way to look at it is that
+; sucessive operations introduce additional uncertainty. One way to look at it is that
 ; par2 uses more operations therefore introduces additional uncertainty.
 
 ; If we have a small uncertainty percentage, then we get close to a point rather than an
-; interval so par1 and par2 yield similar results as if we were operating on points rather
-; than intervals.
+; interval so par1 and par2 yield similar results.
