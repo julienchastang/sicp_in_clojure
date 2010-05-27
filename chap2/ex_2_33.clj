@@ -9,7 +9,7 @@
     (op (first sequence)
 	(accumulate op initial (rest sequence)))))
 
-(accumulate (fn[x y] (list x y)) 0 (list 1 2 3 4 5))
+(accumulate * 1 (list 1 2 3 4 5))
 
 (defn my-map [p sequence]
   (accumulate (fn[x y] (cons (p x) y)) nil sequence))
@@ -20,12 +20,6 @@
     (accumulate cons seq2 seq1))
 
 (append '(1 2 3) '(6 7 8))
-
-(defn length[sequence]
-  (accumulate (fn[x y] (cons x y)) nil sequence))
-
-(length '(1 2 3 3 4 5 6 7))
-
 
 (let [x (ref 0)]
   (defn incr1 []
