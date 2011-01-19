@@ -29,7 +29,6 @@
       (cons (accumulate op initial (map first seqs))
 	    (accumulate-n op initial (map rest seqs)))))
 
-
 (def a [[1 2 3] [4 5 6] [7 8 9]])
 
 (accumulate-n + 0 a)
