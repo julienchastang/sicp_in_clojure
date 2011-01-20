@@ -25,3 +25,7 @@
 (fold-right + 1 (vector 1 2 3))
 
 (fold-left + 1 (vector 1 2 3))
+
+;; In order to have fold-left and fold-right
+;; to return the same answer, the operator
+;; has to be commutative. 
