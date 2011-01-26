@@ -1,4 +1,4 @@
-(ns sicp-in-clojure.chap1.ex-2-33
+(ns sicp-in-clojure.chap2.ex-2-33
   (:use clojure.contrib.repl-utils))
 
 
