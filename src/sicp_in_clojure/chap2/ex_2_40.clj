@@ -25,8 +25,8 @@
 (defn unique-pairs [n]
   (flatmap (fn [i]
 	     (map (fn [j] (list i j))
-		  (range 1 (- i 1))))
-	   (range 1 n )))
+		  (range 1  i)))
+	   (range 1 (+ n 1) )))
 
 (defn prime-sum-pairs [n]
   (map make-pair-sum
