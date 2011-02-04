@@ -24,7 +24,7 @@
 			       (first a))
 			    (= (last p)
 			       (last a))
-			    (= 1 (Math/abs (* 1.0 (/ (- (first p) (first a))
+			    (= 1 (Math/abs (float (/ (- (first p) (first a))
 						     (- (last p) (last a))))))))
 		r)))))
 
