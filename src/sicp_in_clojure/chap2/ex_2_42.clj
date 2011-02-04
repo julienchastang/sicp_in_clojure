@@ -15,7 +15,7 @@
 (defn adjoin-position [r k coll]
   (cons (list r k) coll))
 
-(defn safe? [k positions]
+(defn safe? [positions]
   (let [a (first positions)
 	r (rest positions)]
     (not (some true?
@@ -33,7 +33,7 @@
 		       (if (= k 0)
 			 (list empty-board)
 			 (filter
-			  (fn [positions] (safe? k positions))
+			  (fn [positions] (safe? positions))
 			  (flatmap (fn [rest-of-queens]
 				     (map (fn [new-row]
 					    (adjoin-position new-row k rest-of-queens))
