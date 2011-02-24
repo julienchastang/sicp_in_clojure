@@ -65,6 +65,9 @@
 (defn flip-vert [p]
   (translate-segments (scale-segments p 1 -1) 0 1))
 
+(defn flip-horiz [p]
+  (translate-segments (scale-segments p -1 1) 1 0))
+
 (defn flipped-pairs [p]
   (let [painter2  (beside p (flip-vert p))]
     (below painter2 painter2)))
@@ -92,23 +95,19 @@
 	(beside (below top-left painter)
 		(below corner bottom-right))))))
 
+(defn square-limit [painter n]
+  (let [quarter (corner-split painter n)]
+    (let [half (beside (flip-horiz quarter) quarter)]
+      (below half (flip-vert half)))))
+
 (def wave2 (beside wave (flip-vert wave)))
 
 (def wave4 (flipped-pairs wave))
 
-(def wave6 (corner-split wave 6))
+(def wave6 (square-limit wave 6))
 
 (def a (flip-vert wave))
 
 (def wave-segments (scale-segments wave6 500 500) )
 
 (draw wave-segments)
-
-
-
-
-
-
-
-
-
