@@ -75,11 +75,28 @@
     (let [smaller (right-split painter (dec n))]
       (beside painter (below smaller smaller)))))
 
+(defn up-split [painter n]
+  (if (= n 0)
+    painter
+    (let [smaller (up-split painter (dec n))]
+      (below (beside smaller smaller) painter))))
+
+(defn corner-split [painter n]
+  (if (= n 0)
+    painter
+    (let [up (up-split painter (dec n))
+	  right (right-split painter (dec n))]
+      (let [top-left (beside up up)
+	    bottom-right (below right right)
+	    corner (corner-split painter (dec n))]
+	(beside (below top-left painter)
+		(below corner bottom-right))))))
+
 (def wave2 (beside wave (flip-vert wave)))
 
 (def wave4 (flipped-pairs wave))
 
-(def wave6 (right-split wave 3))
+(def wave6 (corner-split wave 6))
 
 (def a (flip-vert wave))
 
