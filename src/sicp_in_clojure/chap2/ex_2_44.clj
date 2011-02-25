@@ -17,12 +17,6 @@
 	 (.stroke cb)
 	 (finally (.close my-doc)))))
 
-;; (def segments (atom []))
-
-;; (defn make-segment [[x0 y0 x1 y1]]
-;;   (swap! segments conj [x0 y0 x1 y1]))
-
-
 (defn- op-segments[f segs x-scale y-scale]
   (map (fn [[x0 y0 x1 y1]]
 	 [(f x-scale x0)
