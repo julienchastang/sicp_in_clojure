@@ -1,7 +1,9 @@
 (ns sicp-in-clojure.chap2.ex-2-45
   (:use [sicp-in-clojure.chap2.ex-2-44 :exclude (flipped-pairs
 						 wave4
-						 wave-segments)])
+						 wave6
+						 wave-segments
+						 square-limit)])
   (:import (com.lowagie.text Document Paragraph)
 	   (com.lowagie.text.pdf PdfWriter PdfContentByte)
 	   (java.io FileOutputStream)))
@@ -17,8 +19,18 @@
 				  identity flip-vert)]
     (combine4 painter)))
 
+(defn rotate180 [painter]
+  ((comp flip-vert flip-horiz) painter))
+
+(defn square-limit [painter n]
+  (let [combine4 (square-of-four  rotate180 flip-vert
+				  flip-horiz identity)]
+    (combine4 (corner-split painter n))))
+
 (def wave4 (flipped-pairs wave))
 
-(def wave-segments (scale-segments wave4 500 500) )
+(def wave6 (square-limit wave 5))
+
+(def wave-segments (scale-segments wave6 500 500) )
 
 (draw wave-segments)
