@@ -3,7 +3,9 @@
 						 wave4
 						 wave6
 						 wave-segments
-						 square-limit)])
+						 square-limit
+						 right-split
+						 up-split)])
   (:import (com.lowagie.text Document Paragraph)
 	   (com.lowagie.text.pdf PdfWriter PdfContentByte)
 	   (java.io FileOutputStream)))
@@ -27,10 +29,32 @@
 				  flip-horiz identity)]
     (combine4 (corner-split painter n))))
 
-(def wave4 (flipped-pairs wave))
+;; (def wave4 (flipped-pairs wave))
 
-(def wave6 (square-limit wave 5))
+;; (def wave6 (square-limit wave 5))
 
-(def wave-segments (scale-segments wave6 500 500) )
+;; (def wave-segments (scale-segments wave6 500 500) )
+
+;; (draw wave-segments)
+
+
+(defn- split* [painter n f1 f2]
+  (if (= n 0)
+    painter
+    (let [smaller (split* painter (dec n) f1 f2)]
+      (f1 painter (f2 smaller smaller)))))
+
+(defn split [f1 f2]
+  (fn [painter n] (split* painter n f1 f2)))
+
+(defn right-split [painter n]
+  ((split beside below) painter n))
+
+(defn up-split [painter n]
+  ((split below beside) painter n))
+
+(def my-wave (right-split wave 5))
+
+(def wave-segments (scale-segments my-wave 500 500) )
 
 (draw wave-segments)
