@@ -37,15 +37,14 @@
 
 ;; (draw wave-segments)
 
-
-(defn- split* [painter n f1 f2]
-  (if (= n 0)
-    painter
-    (let [smaller (split* painter (dec n) f1 f2)]
-      (f1 painter (f2 smaller smaller)))))
-
 (defn split [f1 f2]
-  (fn [painter n] (split* painter n f1 f2)))
+  (fn [painter n]
+    (letfn [(split* [painter n]
+		    (if (= n 0)
+		      painter
+		      (let [smaller (split* painter (dec n))]
+			(f1 painter (f2 smaller smaller)))))]
+      (split* painter n))))
 
 (defn right-split [painter n]
   ((split beside below) painter n))
