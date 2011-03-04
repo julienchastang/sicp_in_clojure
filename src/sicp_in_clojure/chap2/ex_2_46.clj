@@ -1,7 +1,14 @@
-(ns sicp-in-clojure.chap2.ex-2-46
-    (:import (com.lowagie.text Document Paragraph)
-	   (com.lowagie.text.pdf PdfWriter PdfContentByte)
-	   (java.io FileOutputStream)))
+(ns sicp-in-clojure.chap2.ex-2-46)
+
+
+(defn make-frame [origin edge1 edge2]
+  (list origin edge1 edge2))
+
+(defn edge1-frame [f] (second f))
+
+(defn edge2-frame [f] (last f))
+
+(defn origin-frame [f] (first f))
 
 
 (defn make-vect [x y] [x y])
@@ -16,16 +23,15 @@
 
 (defn scale-vect [s v] (map #(* % s) v))
 
-(defn make-frame [v1 v2] ([v1 v2]))
-
-(defn edge1-frame [f] (first f))
-
-(defn edge2-frame [f] (last f))
-
 
 (defn frame-coord-map [frame]
   (fn [v]
-    (add-vect (scale-vect (xcor-vect v)
-			  (edge1-frame frame))
-	      (scale-vect (ycor-vect v)
-			  (edge2-frame frame)))))
+    (add-vect
+     (origin-frame frame)
+     (add-vect (scale-vect (xcor-vect v)
+					  (edge1-frame frame))
+			      (scale-vect (ycor-vect v)
+					  (edge2-frame frame))))))
+
+
+
