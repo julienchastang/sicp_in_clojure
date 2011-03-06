@@ -51,10 +51,7 @@
 	    ((frame-coord-map frame) (end-segment segment))])
 	 segment-list)))
 
-(def a (segments->painters wave))
+(defn drawing [d] ((segments->painters d) (make-frame [100 100] [200 30] [30 200])))
 
 
-(def b (a (make-frame [100 100] [100 0] [0 100])))
-
-
-(draw b)
+(draw (drawing wave))
