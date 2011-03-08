@@ -44,14 +44,14 @@
   (last segment))
 
 
-(defn segments->painters [segment-list]
+(defn segments->painter [segment-list]
   (fn [frame]
     (map (fn [segment]
 	   [((frame-coord-map frame) (start-segment segment))
 	    ((frame-coord-map frame) (end-segment segment))])
 	 segment-list)))
 
-(defn drawing [d] ((segments->painters d) (make-frame [100 100] [200 30] [30 200])))
+(defn drawing [d] ((segments->painter d) (make-frame [100 100] [200 30] [30 200])))
 
 
 (draw (drawing wave))
