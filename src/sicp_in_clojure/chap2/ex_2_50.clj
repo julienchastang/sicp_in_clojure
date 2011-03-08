@@ -22,7 +22,7 @@
 		     [0 0]))
 
 
-(defn flip-vert [painter]
+(defn shrink-to-upper-right [painter]
   (transform-painter painter
 		     [0.5 0.5]
 		     [1.0 1.0]
@@ -33,13 +33,27 @@
   (transform-painter painter
 		     [1.0 0.0]
 		     [1.0 1.0]
-		     [0.0 1.0]))
+		     [0.0 0]))
 
+(defn rotate180 [painter]
+  (rotate90
+   (rotate90 painter)))
 
-(def a ((rotate90 (segments->painter wave))
-	(make-frame [100 100] [200 30] [30 200])))
+(defn squash-inwards [painter]
+  (transform-painter painter
+		     [0.0 0.0]
+		     [0.65 0.35]
+		     [0.35 0.65]))
+
+(defn flip-horiz [painter]
+  (transform-painter painter
+		     [1 0]
+		     [0 0]
+		     [1 1]))
+
+(def a ((rotate180 (segments->painter wave))
+	(make-frame [100 100] [200 0] [0 200])))
 
 (draw a)
-
 
 
