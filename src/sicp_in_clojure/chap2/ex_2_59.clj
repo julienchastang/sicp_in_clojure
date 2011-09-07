@@ -19,13 +19,6 @@
 	:else (intersection-set (next set1) set2)))
 
 (defn union-set [set1 set2]
-  (cond (and (not (nil? set1)) (not (nil? set2))) (adjoin-set (first set1) set2)
-	(nil? set1) set2
-	(nil? set2) set1
-	:else (union-set (next set1) set2)))
-
-
-(defn union-set [set1 set2]
   (cond (and (nil? set1) (nil? set2)) nil
 	(nil? set2) set1
 	(nil? set1) set2
