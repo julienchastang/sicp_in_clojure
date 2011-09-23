@@ -3,7 +3,7 @@
 
 (defn adjoin-set [x set]
   (cond
-   (or (nil? set) (empty? set)) (list x)
+   (empty? set) (list x)
    (= x  (first set)) set
    (< x  (first set)) (cons x set)
    :else (cons (first set) (adjoin-set x (next set)))))
@@ -31,3 +31,4 @@
 (fact
  (adjoin-set 42 nil) =>
  '(42))
+
