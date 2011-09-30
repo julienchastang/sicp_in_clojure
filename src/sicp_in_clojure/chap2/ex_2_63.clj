@@ -1,4 +1,4 @@
-(ns sicp-in-clojure.chap1.ex-2-63)
+(ns sicp-in-clojure.chap2.ex-2-63)
 
 (defn entry [tree]
   (first tree))
@@ -58,5 +58,7 @@
 
 ;; (a) As far as I can tell, yes, the two tree->list functions do return the same.
 
-;; (b) Yes. Here is a nice discussion.
+;; (b) Intuitively, you would expect to acomplish this in O(n) steps. Concat is problematic
+;; because it takes O(n). Cons simply takes constant time. I expect tree->list-2 to take
+;; O(N) time.
 

@@ -1,7 +1,5 @@
-(ns sicp-in-clojure.chap1.ex-2-62
+(ns sicp-in-clojure.chap2.ex-2-62
   (:use midje.sweet))
-
-
 
 (defn union-set [set1 set2]
   (cond (and (empty? set1) (empty? set2)) '()
