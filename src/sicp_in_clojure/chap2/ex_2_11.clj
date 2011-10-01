@@ -1,4 +1,4 @@
-(ns sicp-in-clojure.chap1.ex-2-11
+(ns sicp-in-clojure.chap2.ex-2-11
   (:use clojure.contrib.math))
 
 ;Figuring out 9 cases

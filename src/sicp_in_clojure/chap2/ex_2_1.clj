@@ -1,4 +1,4 @@
-(ns sicp-in-clojure.chap1.ex-2-1
+(ns sicp-in-clojure.chap2.ex-2-1
   (:use clojure.contrib.math))
 
 (defn my-gcd[a b]

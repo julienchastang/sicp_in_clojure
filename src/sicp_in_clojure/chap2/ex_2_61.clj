@@ -1,4 +1,4 @@
-(ns sicp-in-clojure.chap1.ex-2-61
+(ns sicp-in-clojure.chap2.ex-2-61
   (:use midje.sweet))
 
 (defn adjoin-set [x set]

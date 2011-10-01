@@ -1,4 +1,4 @@
-(ns sicp-in-clojure.chap1.ex-2-14
+(ns sicp-in-clojure.chap2.ex-2-14
   (:use clojure.contrib.math))
 
 (defn lower-bound[x] (apply min x))

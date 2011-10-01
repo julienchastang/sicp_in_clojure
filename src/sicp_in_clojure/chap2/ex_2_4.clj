@@ -1,4 +1,4 @@
-(ns sicp-in-clojure.chap1.ex-2-4
+(ns sicp-in-clojure.chap2.ex-2-4
   (:use clojure.contrib.math))
 
 (defn my-cons[x y]

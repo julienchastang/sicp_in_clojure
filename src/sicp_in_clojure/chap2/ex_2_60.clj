@@ -1,4 +1,4 @@
-(ns sicp-in-clojure.chap1.ex-2-60)
+(ns sicp-in-clojure.chap2.ex-2-60)
 
 (defn element-of-set? [x set]
   (cond (nil? set) false

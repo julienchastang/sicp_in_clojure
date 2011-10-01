@@ -1,4 +1,4 @@
-(ns sicp-in-clojure.chap1.ex-2-28
+(ns sicp-in-clojure.chap2.ex-2-28
   (:use clojure.contrib.repl-utils))
 
 (defn fringe[x]

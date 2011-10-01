@@ -1,4 +1,4 @@
-(ns sicp-in-clojure.chap1.ex-2-53
+(ns sicp-in-clojure.chap2.ex-2-53
   (:use clojure.test)
   (:use midje.sweet))
 

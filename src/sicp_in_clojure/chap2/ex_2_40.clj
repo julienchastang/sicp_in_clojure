@@ -1,6 +1,6 @@
 (ns sicp-in-clojure.chap2.ex-2-40
   (:use clojure.contrib.repl-utils)
-  (:require [sicp-in-clojure.chap1.ex-1-22 :as ex22])
+  (:require [sicp-in-clojure.chap2.ex-1-22 :as ex22])
   (:require [sicp-in-clojure.chap2.ex-2-33 :as ex33]))
 
 (defn accumulate [op initial sequence]

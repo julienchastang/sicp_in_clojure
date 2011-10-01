@@ -1,4 +1,4 @@
-(ns sicp-in-clojure.chap1.ex-2-19
+(ns sicp-in-clojure.chap2.ex-2-19
   (:use clojure.contrib.repl-utils))
 
 (def us-coins (list 50 25 10 5 1))

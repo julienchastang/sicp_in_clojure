@@ -1,4 +1,4 @@
-(ns sicp-in-clojure.chap1.ex-2-25
+(ns sicp-in-clojure.chap2.ex-2-25
   (:use clojure.contrib.repl-utils))
 
 (def a '(1 3 (5 7) 9))

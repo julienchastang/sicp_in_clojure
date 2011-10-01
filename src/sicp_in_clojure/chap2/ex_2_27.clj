@@ -1,4 +1,4 @@
-(ns sicp-in-clojure.chap1.ex-2-27
+(ns sicp-in-clojure.chap2.ex-2-27
   (:use clojure.contrib.repl-utils))
 
 (defn count-leaves[x]

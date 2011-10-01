@@ -1,4 +1,4 @@
-(ns sicp-in-clojure.chap1.ex-2-37
+(ns sicp-in-clojure.chap2.ex-2-37
   (:use clojure.contrib.repl-utils))
 
 (defn accumulate [op initial sequence]

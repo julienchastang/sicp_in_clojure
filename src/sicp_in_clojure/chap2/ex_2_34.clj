@@ -1,4 +1,4 @@
-(ns sicp-in-clojure.chap1.ex-2-34
+(ns sicp-in-clojure.chap2.ex-2-34
   (:use clojure.contrib.repl-utils))
 
 (let [x (ref -1)]

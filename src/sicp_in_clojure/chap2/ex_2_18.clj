@@ -1,4 +1,4 @@
-(ns sicp-in-clojure.chap1.ex-2-18
+(ns sicp-in-clojure.chap2.ex-2-18
   (:use clojure.contrib.math))
 
 (defn my-reverse[c]

@@ -1,4 +1,4 @@
-(ns sicp-in-clojure.chap1.ex-2-57)
+(ns sicp-in-clojure.chap2.ex-2-57)
 
 (defn third [c]
   (nth c 2))

@@ -1,4 +1,4 @@
-(ns sicp-in-clojure.chap1.ex-2-55)
+(ns sicp-in-clojure.chap2.ex-2-55)
 
 (def a ''abracadabra)
 

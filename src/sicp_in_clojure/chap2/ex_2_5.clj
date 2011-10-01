@@ -1,4 +1,4 @@
-(ns sicp-in-clojure.chap1.ex-2-5
+(ns sicp-in-clojure.chap2.ex-2-5
   (:use clojure.contrib.math))
 
 (defn my-cons[a b] (* (Math/pow 2 a) (Math/pow 3 b)))
