@@ -1,4 +1,4 @@
-(ns sicp-in-clojure.chap2.ex-2-66
+(ns sicp-in-clojure.chap2.ex-2-67
   (:use [sicp-in-clojure.chap2.ex-2-33 :only [append]]))
 
 (defn make-leaf [symbol weight]
@@ -78,3 +78,5 @@
                                                   (make-leaf 'C 1)))))
 
 (def sample-message '(0 1 1 0 0 1 0 1 0 1 1 1 0))
+
+(decode sample-message sample-tree)
