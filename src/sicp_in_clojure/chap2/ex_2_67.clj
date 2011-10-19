@@ -61,7 +61,7 @@
   (cond (empty? set) (list x)
         (< (weight x) (weight (first set))) (cons x set)
         :else (cons (first set)
-                    (adjoin-set x (set rest)))))
+                    (adjoin-set x (rest set)))))
 
 (defn make-leaf-set [pairs]
   (if (empty? pairs)
@@ -69,7 +69,7 @@
     (let [pair (first pairs)]
       (adjoin-set (make-leaf (first pair)
                              (first (rest pair)))
-                  (make-leaf-set) (rest pairs)))))
+                  (make-leaf-set (rest pairs))))))
 
 (def sample-tree (make-code-tree (make-leaf 'A 4)
                                  (make-code-tree
