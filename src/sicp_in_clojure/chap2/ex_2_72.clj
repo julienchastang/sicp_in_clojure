@@ -4,4 +4,4 @@
 
 ;; encode-symbol seems to be log2(N), but this will be overwhelmed by the O(N) term.
 
-;; Encode recursively traverses the "tree list" with the O(N) at each point so it seems the result will be O(N^2).
+;; Encode recursively traverses the "tree list" of length N. There is the O(N) append at each recursive call so it seems the result will be O(N^2).
