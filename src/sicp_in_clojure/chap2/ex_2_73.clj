@@ -29,12 +29,14 @@
 (defn type-tag [datum]
   ( if (pair? datum)
     (first datum)
-    (throw (Exception. "Bad tagged datum -- TYPE-TAG" datum))))
+    (throw (Exception. (str "Bad tagged datum -- TYPE-TAG " datum)))))
 
 (defn contents [datum]
   (if (pair? datum)
-    (first (rest datum))
-    (throw (Exception. "Bad tagged datum -- CONTENTS" datum))))
+    (rest datum)
+    (throw (Exception. (str "Bad tagged datum -- CONTENTS " datum)))))
+
+;; Dynamic dispatch map
 
 (def op-map (atom {}))
 
@@ -44,10 +46,12 @@
 (defn get [op type]
   (@op-map (list op type)))
 
+;; Packages
+
 (defn install-rectangular-package []
   (let [real-part (fn [z] (first z))
         imag-part (fn [z] (first (rest z)))
-        make-from-real-imag (fn [x y] (cons (list y)))
+        make-from-real-imag (fn [x y] (cons x (list y)))
         make-from-mag-ang (fn [r a] (cons (* r (cos a)) (list (* r (sin a)))))
         magnitude (fn [z] (sqrt (+ (square (real-part z))
                                   (square (imag-part z)))))
@@ -71,7 +75,6 @@
         imag-part (fn [z] (* (magnitude z) (sin (angle z))))
         make-from-real-imag (fn [x y]
                                     (cons (sqrt (+ (square x) (square y))) (list (atan y x))))
- 
         tag (fn [x] (attach-tag 'polar x))]
     (put 'real-part '(polar) real-part)
     (put 'imag-part '(polar) imag-part)
@@ -82,13 +85,17 @@
     (put 'make-from-mag-ang 'polar
          (fn [r a] (tag (make-from-mag-ang r a))))))
 
-(defn apply-generic [op args]
+(install-rectangular-package)
+
+(install-polar-package)
+
+(defn apply-generic [op & args]
   (let [type-tags (map type-tag args)]
     (let [proc (get op type-tags)]
       (if proc
         (apply proc (map contents args))
         (throw (Exception.
-                "No method for these types -- APPLY-GENERIC") (list op type-tags))))))
+                (str "No method for these types -- APPLY-GENERIC " op type-tags)))))))
 
 (defn real-part [z] (apply-generic 'real-part z))
 
