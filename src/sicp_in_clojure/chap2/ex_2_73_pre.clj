@@ -1,4 +1,4 @@
-(ns sicp-in-clojure.chap2.ex-2-73
+(ns sicp-in-clojure.chap2.ex-2-73-pre
   (:refer-clojure :exclude [get]))
 
 ;; Basic math
