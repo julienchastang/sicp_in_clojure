@@ -48,6 +48,9 @@
 
 ;; Packages
 
+;; Note below that make-from-real-image and make-from-mag-ang have to be "re-tagged" so that there is
+;; no ambiguity about the coordinate system of the values.
+
 (defn install-rectangular-package []
   (let [real-part (fn [z] (first z))
         imag-part (fn [z] (first (rest z)))
