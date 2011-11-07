@@ -83,4 +83,9 @@
 (def sal (find-employee-record "Sal" employees-div1 employees-div2))
 
 (def bob (find-employee-record "Bob" employees-div1 employees-div2))
-;; (get-sala)
+
+(get-salary bob) ;; 70
+
+
+(get-salary sal) ;; 60
+
