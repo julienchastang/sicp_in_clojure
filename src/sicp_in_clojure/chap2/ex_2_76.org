@@ -1,0 +1,8 @@
+|-----------------+--------------------------------------------------+------------------------------------------|
+|                 | Adding Types                                     | Adding Operations                        |
+|-----------------+--------------------------------------------------+------------------------------------------|
+| data-directed   | Must create a new package for each incoming type | operations must be added to each closure |
+| message-passing | Must create a new closure for each incoming type | operations must be added to each closure |
+|-----------------+--------------------------------------------------+------------------------------------------|
+
+Explicit dispatch is less flexible than data-directed or message-passing.
