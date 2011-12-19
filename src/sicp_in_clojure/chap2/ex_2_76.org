@@ -1,8 +1,13 @@
-|-----------------+--------------------------------------------------+------------------------------------------|
-|                 | Adding Types                                     | Adding Operations                        |
-|-----------------+--------------------------------------------------+------------------------------------------|
-| data-directed   | Must create a new package for each incoming type | operations must be added to each closure |
-| message-passing | Must create a new closure for each incoming type | operations must be added to each closure |
-|-----------------+--------------------------------------------------+------------------------------------------|
+|-----------------+--------------------------------------------------+---------------------------------------------------|
+|                 | Adding Types                                     | Adding Operations                                 |
+|-----------------+--------------------------------------------------+---------------------------------------------------|
+| data-directed   | Must create a new package for each incoming type | operations must be added to the dispatch table    |
+| message-passing | Must create a new closure for each incoming type | operations must be added to each closure a priori |
+|-----------------+--------------------------------------------------+---------------------------------------------------|
+
+Other comments:
 
 Explicit dispatch is less flexible than data-directed or message-passing.
+
+Message passing appears to be less dynamic than data-directed dispatch. With message-passing you have to know more
+about your operations a priori.

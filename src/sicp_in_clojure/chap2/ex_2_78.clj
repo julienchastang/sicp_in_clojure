@@ -1,5 +1,7 @@
-(ns sicp-in-clojure.chap2.ex-2-73-pre
+(ns sicp-in-clojure.chap2.ex-2-78
   (:refer-clojure :exclude [get]))
+
+;; Very useful debugging macro
 
 (defmacro ? [x] `(let [x# ~x] (println "dbg:" '~x "=" x#) x#))
 
@@ -34,14 +36,16 @@
   (cons type-tag contents))
 
 (defn type-tag [datum]
-  ( if (pair? (? datum))
-    (first datum)
-    (throw (Exception. (str "Bad tagged datum -- TYPE-TAG " datum)))))
+  (cond
+   (number? datum) 'scheme-number
+   (pair? datum) (first datum)
+   :else (throw (Exception. (str "Bad tagged datum -- TYPE-TAG " datum)))))
 
 (defn contents [datum]
-  (if (pair? datum)
-    (rest datum)
-    (throw (Exception. (str "Bad tagged datum -- CONTENTS " datum)))))
+  (cond
+   (number? datum) datum
+   (pair? datum) (rest datum)
+   :else (throw (Exception. (str "Bad tagged datum -- CONTENTS " datum)))))
 
 ;; Dynamic dispatch map
 
@@ -59,7 +63,7 @@
 (defn apply-generic [op & args]
   (let [type-tags (map type-tag (? args))]
     (let [proc (get (? op) (? type-tags))]
-      (if proc
+      (if (? proc)
         (apply proc (map (? contents) args))
         (throw (Exception.
                 (str "No method for these types -- APPLY-GENERIC " op type-tags)))))))
@@ -132,18 +136,14 @@
 ;; Scheme number package
 
 (defn install-scheme-number-package []
-  (let [tag (fn [x]
-              (attach-tag 'scheme-number x))]
-    (put 'add '(scheme-number scheme-number)
-         (fn [x y] (tag (+ x y))))
-    (put 'sub '(scheme-number scheme-number)
-         (fn [x y] (tag (- x y))))
-    (put 'mul '(scheme-number scheme-number)
-         (fn [x y] (tag (* x y))))
-    (put 'div '(scheme-number scheme-number)
-         (fn [x y] (tag (/ x y))))
-    (put 'make 'scheme-number
-         (fn [x] (tag (list x))))))
+  (put 'add '(scheme-number scheme-number)
+       (fn [x y] (+ x y)))
+  (put 'sub '(scheme-number scheme-number)
+       (fn [x y] (- x y)))
+  (put 'mul '(scheme-number scheme-number)
+       (fn [x y] (* x y)))
+  (put 'div '(scheme-number scheme-number)
+       (fn [x y] (/ x y))))
 
 (install-scheme-number-package)
 
@@ -155,11 +155,8 @@
 
 (defn div [x y] (apply-generic 'div x y))
 
-(defn make-scheme-number [n]
-  ((get 'make 'scheme-number) n))
 
-
-;; Rational numbeer package
+;; Rational number package
 
 (defn install-rational-package []
   (let [numer (fn [x]  (first x))

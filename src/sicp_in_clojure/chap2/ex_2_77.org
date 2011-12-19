@@ -1,0 +1,13 @@
+apply-generic is the center of all the action:
+
+The first go-around we will look up a function for the type "complex rectangular" and the operation "magnitude". Fortunately, Alyssa just defined this operation for us in the dispatch table and the magnitude function will be called. But invokation of magnitude with type "complex rectangular" re-invokes the magnitude function with the type "rectangular". So apply-generic is invoked twice.
+
+Here is a trace through the apply-generic function
+
+dbg: args = ((complex rectangular 6 7))
+dbg: op = magnitude
+dbg: type-tags = (complex)
+
+dbg: args = ((rectangular 6 7))
+dbg: op = magnitude
+dbg: type-tags = (rectangular)
