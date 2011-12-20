@@ -1,4 +1,4 @@
-(ns sicp-in-clojure.chap2.ex-2-78
+(ns sicp-in-clojure.chap2.ex-2-80
   (:refer-clojure :exclude [get]))
 
 ;; Very useful debugging macro
@@ -143,7 +143,11 @@
   (put 'mul '(scheme-number scheme-number)
        (fn [x y] (* x y)))
   (put 'div '(scheme-number scheme-number)
-       (fn [x y] (/ x y))))
+       (fn [x y] (/ x y)))
+  (put 'equ? '(scheme-number scheme-number)
+       (fn [x y] (= x y)))
+  (put '=zero? '(scheme-number)
+       (fn [x] (= x 0)))  )
 
 (install-scheme-number-package)
 
@@ -155,6 +159,9 @@
 
 (defn div [x y] (apply-generic 'div x y))
 
+(defn equ? [x y] (apply-generic 'equ? x y))
+
+(defn =zero? [x] (apply-generic '=zero? x))
 
 ;; Rational number package
 
@@ -173,6 +180,11 @@
                                    (* (denom x) (denom y))))
         div-rat (fn [x y]
                   (make-rat (* (numer x) (denom y)) (* (denom x) (numer y))))
+        equ-rat? (fn [x y]
+                   (and (equ? (numer x) (numer y)) (equ? (denom x) (denom y))))
+        =zero-rat? (fn [x]
+                     (equ-rat? x (make-rat 0 0)))
+
         tag (fn [x] (attach-tag 'rational x))]
     (put 'add '(rational rational)
          (fn [ x y] (tag (add-rat x y))))
@@ -182,6 +194,10 @@
          (fn [x y] (tag (mul-rat x y))))
     (put 'div '(rational rational)
          (fn [ x y] (tag (div-rat x y))))
+    (put 'equ? '(rational rational)
+         (fn [ x y] (equ-rat? x y)))
+    (put '=zero? '(rational)
+         (fn [x] (=zero-rat? x)))
     (put 'make 'rational
          (fn [n d] (tag (make-rat n d))))))
 
@@ -202,6 +218,10 @@
                                                   (+ (angle z1) (angle z2))))
         div-complex (fn [z1 z2]
                       (make-from-mag-ang (/ (magnitude z1) (magnitude z2)) (- (angle z1) (angle z2))))
+        equ-complex? (fn [z1 z2]
+                       (and (equ? (magnitude z1) (magnitude z2)) (equ? (angle z1) (angle z2))))
+        =zero-complex? (fn [z]
+                         (equ-complex? z (attach-tag 'complex (make-from-real-imag 0 0))))
         tag (fn [z] (attach-tag 'complex z))]
     (put 'add '(complex complex)
          (fn [z1 z2] (tag (add-complex z1 z2))))
@@ -211,6 +231,10 @@
          (fn [z1 z2] (tag (mul-complex z1 z2))))
     (put 'div '(complex complex)
          (fn [z1 z2] (tag (div-complex z1 z2))))
+    (put 'equ?  '(complex complex)
+         (fn [z1 z2] (equ-complex? z1 z2)))
+    (put '=zero?  '(complex)
+         (fn [z] (=zero-complex? z)))
     (put 'make-from-real-imag 'complex
          (fn [x y] (tag (make-from-real-imag x y))))
     (put 'make-from-mag-ang 'complex
@@ -235,7 +259,6 @@
 (defn div-complex [z1 z2]
   (make-from-mag-ang (/ (magnitude z1) (magnitude z2))
                      (- (angle z1) (angle z2))))
-
 
 (defn make-complex-from-real-imag [x y] ((get 'make-from-real-imag 'complex) x y))
 

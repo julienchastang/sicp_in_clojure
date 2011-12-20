@@ -163,9 +163,9 @@
 
 (defn install-rational-package []
   (let [numer (fn [x]  (first x))
-        denom (fn [x] (rest x))
+        denom (fn [x] (fnext x))
         make-rat (fn [n d]
-                   (let [g (gcd n d)] (cons (/ n g) (/ d g))))
+                   (let [g (gcd n d)] (cons (/ n g) (list (/ d g)))))
         add-rat (fn [x y] (make-rat (+ (* (numer x) (denom y))
                                       (* (numer y) (denom x))) (* (denom x) (denom y))))
         sub-rat (fn [x y] (make-rat (- (* (numer x) (denom y))

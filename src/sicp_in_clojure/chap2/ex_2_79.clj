@@ -1,4 +1,4 @@
-(ns sicp-in-clojure.chap2.ex-2-78
+(ns sicp-in-clojure.chap2.ex-2-79
   (:refer-clojure :exclude [get]))
 
 ;; Very useful debugging macro
@@ -163,9 +163,11 @@
 
 (defn install-rational-package []
   (let [numer (fn [x]  (first x))
-        denom (fn [x] (rest x))
+        denom (fn [x] (fnext x))
         make-rat (fn [n d]
-                   (let [g (gcd n d)] (cons (/ n g) (/ d g))))
+                   (let [g (gcd n d)] (if (zero? g)
+                                        '(0 0)
+                                        (cons (/ n g) (list (/ d g))))))
         add-rat (fn [x y] (make-rat (+ (* (numer x) (denom y))
                                       (* (numer y) (denom x))) (* (denom x) (denom y))))
         sub-rat (fn [x y] (make-rat (- (* (numer x) (denom y))
@@ -186,7 +188,7 @@
     (put 'div '(rational rational)
          (fn [ x y] (tag (div-rat x y))))
     (put 'equ? '(rational rational)
-         (fn [ x y] (tag (equ-rat? x y))))
+         (fn [ x y] (equ-rat? x y)))
     (put 'make 'rational
          (fn [n d] (tag (make-rat n d))))))
 
@@ -208,7 +210,7 @@
         div-complex (fn [z1 z2]
                       (make-from-mag-ang (/ (magnitude z1) (magnitude z2)) (- (angle z1) (angle z2))))
         equ-complex? (fn [z1 z2]
-                       (and (equ? (magnitude z1) (equ? magnitude z2)) (equ? (angle z1) (equ? angle z2))))
+                       (and (equ? (magnitude z1) (magnitude z2)) (equ? (angle z1) (angle z2))))
         tag (fn [z] (attach-tag 'complex z))]
     (put 'add '(complex complex)
          (fn [z1 z2] (tag (add-complex z1 z2))))
@@ -219,7 +221,7 @@
     (put 'div '(complex complex)
          (fn [z1 z2] (tag (div-complex z1 z2))))
     (put 'equ?  '(complex complex)
-         (fn [z1 z2] (tag (equ-complex? z1 z2))))
+         (fn [z1 z2] (equ-complex? z1 z2)))
     (put 'make-from-real-imag 'complex
          (fn [x y] (tag (make-from-real-imag x y))))
     (put 'make-from-mag-ang 'complex
@@ -244,7 +246,6 @@
 (defn div-complex [z1 z2]
   (make-from-mag-ang (/ (magnitude z1) (magnitude z2))
                      (- (angle z1) (angle z2))))
-
 
 (defn make-complex-from-real-imag [x y] ((get 'make-from-real-imag 'complex) x y))
 
