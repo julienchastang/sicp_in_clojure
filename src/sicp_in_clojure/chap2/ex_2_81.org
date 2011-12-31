@@ -1,0 +1,31 @@
+
+* Exercise 2.81.
+
+a. In this particular case, we get stuck in an infinite loop. There is no operation in the dispatch table that can handle exponentiation for complex types. After, apply-generic attempts to coerce the complex type. But the complex type coerces to itself leading to an infinite loop.
+
+b. apply-generic works as is. There are operations defined in the dispatch table for adding two scheme numbers, two complex numbers, etc. In the case of the exp function, it will fail correctly.
+
+c. Get rid of Louis Reasoner's code, for starters.
+
+(defn apply-generic [op & args]
+  (let [type-tags (map type-tag args)
+        ex (Exception.
+            (apply str (interpose " " (list*
+                                       "No method for these types -- APPLY-GENERIC " op type-tags))))]
+    (let [proc (get (? op) (? type-tags))]
+      (if (? proc)
+        (apply proc (map contents args))
+        (if (= (count args) 2)
+          (let [type1 (first type-tags)
+                type2 (fnext type-tags)
+                a1 (first args)
+                a2 (fnext args)]
+            (if-not (= type1 type2)
+              (let [t1->t2 (get-coercion type1 type2)
+                    t2->t1 (get-coercion type2 type1)]
+                (cond t1->t2 (apply-generic op (t1->t2 a1) a2)
+                      t2->t1 (apply-generic op a1 (t2->t1 a2))
+                      :default
+                      (throw ex)))
+              (throw  ex)))
+          (throw ex))))))
