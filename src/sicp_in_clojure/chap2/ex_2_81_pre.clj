@@ -66,32 +66,34 @@
   (swap! coerc-map assoc (list type1 type2) f))
 
 (defn get-coercion [type1 type2]
-  (@coerc-map (list type1 type2)))
+  (if (= type1 type2)
+    identity
+    (@coerc-map (list type1 type2))))
 
 ;; The magical dynamic dispatch
 
-(defn apply-generic [op & args]
+(defn apply-generic-helper [op type-coerce & args]
   (let [type-tags (map type-tag args)
-        ex (Exception.
-            (apply str (interpose " " (list*
-                                       "No method for these types -- APPLY-GENERIC " op type-tags))))]
-    (let [proc (get (? op) (? type-tags))]
-      (if (? proc)
-        (apply proc (map contents args))
-        (if (= (count args) 2)
-          (let [type1 (first type-tags)
-                type2 (fnext type-tags)
-                a1 (first args)
-                a2 (fnext args)]
-            (if-not (= type1 type2)
-              (let [t1->t2 (get-coercion type1 type2)
-                    t2->t1 (get-coercion type2 type1)]
-                (cond t1->t2 (apply-generic op (t1->t2 a1) a2)
-                      t2->t1 (apply-generic op a1 (t2->t1 a2))
-                      :default
-                      (throw ex)))
-              (throw  ex)))
-          (throw ex))))))
+        proc (get op type-tags)]
+    (if proc
+      (apply proc (map contents args))
+      (let [type1 (first type-tags)
+            type2 (fnext type-tags)
+            a1 (first args)
+            a2 (fnext args)
+            t1->tc (get-coercion type1 type-coerce)
+            t2->tc (get-coercion type2 type-coerce)]
+        (if (and (? t1->tc) (? t2->tc))
+          (apply-generic-helper op type-coerce (t1->tc a1) (t2->tc a2))
+          (throw (Exception. "Could not do operation!")))))))
+
+(defn apply-generic [op & args]
+  (if (> (count args) 1)
+    (let [f (fn [arg1 arg2]
+              (let [args (list arg1 arg2)]
+                (apply apply-generic-helper op (type-tag (first args)) args)))]
+      (reduce f args))
+    (apply apply-generic-helper op (type-tag (first args)) args)))
 
 ;; Packages
 
@@ -238,7 +240,7 @@
 (defn install-complex-package []
   (let [make-from-real-imag (fn [x y] ((get 'make-from-real-imag 'rectangular) x y))
         make-from-mag-ang (fn [r a] ((get 'make-from-mag-ang 'polar) r a))
-        add-complex (fn [ z1 z2] (make-from-real-imag (+ (real-part z1) (real-part z2))
+        add-complex (fn [z1 z2] (make-from-real-imag (+ (real-part z1) (real-part z2))
                                                      (+ (imag-part z1) (imag-part z2))))
         sub-complex (fn [ z1 z2]
                       (make-from-real-imag (- (real-part z1) (real-part z2)) (- (imag-part z1) (imag-part z2))))
@@ -299,11 +301,3 @@
   (make-complex-from-real-imag (contents n) 0))
 
 (put-coercion 'scheme-number 'complex scheme-number->complex)
-
-(defn scheme-number->scheme-number [n] n)
-
-(defn complex->complex [z] z)
-
-;; (put-coercion 'scheme-number 'scheme-number scheme-number->scheme-number)
-
-;; (put-coercion 'complex 'complex complex->complex)
