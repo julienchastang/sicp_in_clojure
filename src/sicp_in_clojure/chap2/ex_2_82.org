@@ -1,0 +1,24 @@
+* Ex 2.82
+
+(defn apply-generic-helper [op type-coerce & args]
+  (let [type-tags (map type-tag args)
+        proc (get op type-tags)]
+    (if proc
+      (apply proc (map contents args))
+      (let [type1 (first type-tags)
+            type2 (fnext type-tags)
+            a1 (first args)
+            a2 (fnext args)
+            t1->tc (get-coercion type1 type-coerce)
+            t2->tc (get-coercion type2 type-coerce)]
+        (if (and (? t1->tc) (? t2->tc))
+          (apply-generic-helper op type-coerce (t1->tc a1) (t2->tc a2))
+          (throw (Exception. "Could not do operation!")))))))
+
+(defn apply-generic [op & args]
+  (if (> (count args) 1)
+    (let [f (fn [arg1 arg2]
+              (let [args (list arg1 arg2)]
+                (apply apply-generic-helper op (type-tag (first args)) args)))]
+      (reduce f args))
+    (apply apply-generic-helper op (type-tag (first args)) args)))
