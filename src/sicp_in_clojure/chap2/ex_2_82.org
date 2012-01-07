@@ -22,3 +22,6 @@
                 (apply apply-generic-helper op (type-tag (first args)) args)))]
       (reduce f args))
     (apply apply-generic-helper op (type-tag (first args)) args)))
+
+
+I suppose if we are trying to coerce types that have no direct conversion, but must pass through an intermediate type (e.g. int has to go through rational before making it to real), we can get into trouble. I am not sure this is what Abelson and Sussman had in mind, though.
