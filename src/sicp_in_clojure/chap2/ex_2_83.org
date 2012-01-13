@@ -1,0 +1,6 @@
+(defn raise [n]
+  (let [tower { 'rational (fn [n]
+                            (let [[d n] (contents n)]
+                              (* 1.0 (/ d n))))
+               'scheme-number (fn[n] (make-complex-from-real-imag (contents n) 0))}]
+    ((tower (type-tag n)) n)))
