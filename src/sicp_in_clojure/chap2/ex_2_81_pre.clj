@@ -301,3 +301,12 @@
   (make-complex-from-real-imag (contents n) 0))
 
 (put-coercion 'scheme-number 'complex scheme-number->complex)
+
+;; Building tower
+
+(defn raise [n]
+  (let [tower { 'scheme-number (fn[n] (make-rational n 1))
+               'rational (fn [n]
+                           (let [[d n] (contents n)]
+                             (make-complex-from-real-imag (* 1.0 (/ d n)) 0)))}]
+    ((tower (type-tag n)) n)))
