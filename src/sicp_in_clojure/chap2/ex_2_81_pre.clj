@@ -72,28 +72,38 @@
 
 ;; The magical dynamic dispatch
 
-(defn apply-generic-helper [op type-coerce & args]
+;; (defn apply-generic-helper [op type-coerce & args]
+;;   (let [type-tags (map type-tag args)
+;;         proc (get op type-tags)]
+;;     (if proc
+;;       (apply proc (map contents args))
+;;       (let [type1 (first type-tags)
+;;             type2 (fnext type-tags)
+;;             a1 (first args)
+;;             a2 (fnext args)
+;;             t1->tc (get-coercion type1 type-coerce)
+;;             t2->tc (get-coercion type2 type-coerce)]
+;;         (if (and (? t1->tc) (? t2->tc))
+;;           (apply-generic-helper op type-coerce (t1->tc a1) (t2->tc a2))
+;;           (throw (Exception. "Could not do operation!")))))))
+
+(declare succ-raise)
+
+(defn apply-generic-helper [op & args]
   (let [type-tags (map type-tag args)
         proc (get op type-tags)]
     (if proc
       (apply proc (map contents args))
-      (let [type1 (first type-tags)
-            type2 (fnext type-tags)
-            a1 (first args)
-            a2 (fnext args)
-            t1->tc (get-coercion type1 type-coerce)
-            t2->tc (get-coercion type2 type-coerce)]
-        (if (and (? t1->tc) (? t2->tc))
-          (apply-generic-helper op type-coerce (t1->tc a1) (t2->tc a2))
-          (throw (Exception. "Could not do operation!")))))))
+      (let [[a1 a2] (succ-raise (first args) (fnext args))]
+        (apply-generic-helper op a1 a2)))))
 
 (defn apply-generic [op & args]
   (if (> (count args) 1)
     (let [f (fn [arg1 arg2]
               (let [args (list arg1 arg2)]
-                (apply apply-generic-helper op (type-tag (first args)) args)))]
+                (apply apply-generic-helper op  args)))]
       (reduce f args))
-    (apply apply-generic-helper op (type-tag (first args)) args)))
+    (apply apply-generic-helper op  args)))
 
 ;; Packages
 
@@ -294,7 +304,6 @@
 
 (defn make-complex-from-mag-ang [r a] ((get 'make-from-mag-ang 'complex) r a))
 
-
 ;; Coercing types
 
 (defn scheme-number->complex [n]
@@ -304,9 +313,27 @@
 
 ;; Building tower
 
+(def tower  ['rational 'scheme-number 'complex])
+
 (defn raise [n]
-  (let [tower { 'scheme-number (fn[n] (make-rational n 1))
-               'rational (fn [n]
-                           (let [[d n] (contents n)]
-                             (make-complex-from-real-imag (* 1.0 (/ d n)) 0)))}]
-    ((tower (type-tag n)) n)))
+  (let [f {
+           'rational (fn [n]
+                       (let [[d n] (contents n)]
+                         (* 1.0 (/ d n))))
+           'scheme-number (fn [n]
+                            (make-complex-from-real-imag n 0))}]
+    ((f (type-tag n)) n)))
+
+(defn succ-raise [n1 n2]
+  (let [idx #(.indexOf tower (type-tag %))
+        a (idx n1)
+        b (idx n2)
+        f (fn [x num]
+            (let [n (atom x)
+                  i (idx num)]
+              (while (not= (idx @n) i)
+                (swap! n raise))
+              @n))]
+    (if (< a b)
+      (list (f n1 n2) n2)
+      (list n1 (f n2 n1)))))
