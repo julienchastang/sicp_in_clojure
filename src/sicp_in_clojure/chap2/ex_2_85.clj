@@ -8,8 +8,8 @@
 ;; Basic math
 
 (defn gcd[a b]
-  (if (zero? (? b))
-    (? a)
+  (if (zero? b)
+    a
     (recur b (mod a b))))
 
 (defn sqrt[x]
@@ -74,6 +74,8 @@
 
 (declare succ-raise)
 
+(declare drop)
+
 (defn apply-generic-helper [op & args]
   (let [type-tags (map type-tag args)
         proc (get op type-tags)]
@@ -86,9 +88,12 @@
   (if (> (count args) 1)
     (let [f (fn [arg1 arg2]
               (let [args (list arg1 arg2)]
-                (apply apply-generic-helper op  args)))]
+                (apply apply-generic-helper op args)))]
       (reduce f args))
-    (apply apply-generic-helper op  args)))
+    (apply apply-generic-helper op args)))
+
+(defn apply-generic-num [op & args]
+  (drop (apply apply-generic op args)))
 
 ;; Packages
 
@@ -172,26 +177,26 @@
        (fn [x y] (= x y)))
   (put '=zero? '(scheme-number)
        (fn [x] (= x 0)))
-  (put 'drop '(scheme-number)
+  (put 'project '(scheme-number)
        (fn [x] (make-rational (int x) 1))))
 
 (install-scheme-number-package)
 
-(defn add [x y] (apply-generic 'add x y))
+(defn add [x y] (apply-generic-num 'add x y))
 
-(defn sub [x y] (apply-generic 'sub x y))
+(defn sub [x y] (apply-generic-num 'sub x y))
 
-(defn mul [x y] (apply-generic 'mul x y))
+(defn mul [x y] (apply-generic-num 'mul x y))
 
-(defn div [x y] (apply-generic 'div x y))
+(defn div [x y] (apply-generic-num 'div x y))
 
-(defn exp [x y] (apply-generic 'exp x y))
+(defn exp [x y] (apply-generic-num 'exp x y))
 
 (defn equ? [x y] (apply-generic 'equ? x y))
 
 (defn =zero? [x] (apply-generic '=zero? x))
 
-(defn drop [x]  (apply-generic 'drop x))
+(defn project [x]  (apply-generic 'project x))
 
 ;; Rational number package
 
@@ -215,7 +220,7 @@
                    (and (equ? (numer x) (numer y)) (equ? (denom x) (denom y))))
         =zero-rat? (fn [x]
                      (equ-rat? x (make-rat 0 0)))
-        drop (fn [x] (numer x))
+        project (fn [x] (numer x))
         tag (fn [x] (attach-tag 'rational x))]
     (put 'add '(rational rational)
          (fn [ x y] (tag (add-rat x y))))
@@ -229,8 +234,8 @@
          (fn [ x y] (equ-rat? x y)))
     (put '=zero? '(rational)
          (fn [x] (=zero-rat? x)))
-    (put 'drop '(rational)
-         (fn [x] (drop x)))
+    (put 'project '(rational)
+         (fn [x] (project x)))
     (put 'make 'rational
          (fn [n d] (tag (make-rat n d))))))
 
@@ -254,7 +259,7 @@
                        (and (equ? (magnitude z1) (magnitude z2)) (equ? (angle z1) (angle z2))))
         =zero-complex? (fn [z]
                          (equ-complex? z (attach-tag 'complex (make-from-real-imag 0 0))))
-        drop (fn [z] (real-part z))
+        project (fn [z] (real-part z))
         tag (fn [z] (attach-tag 'complex z))]
     (put 'add '(complex complex)
          (fn [z1 z2] (tag (add-complex z1 z2))))
@@ -268,8 +273,8 @@
          (fn [z1 z2] (equ-complex? z1 z2)))
     (put '=zero?  '(complex)
          (fn [z] (=zero-complex? z)))
-    (put 'drop '(complex)
-         (fn [z] (drop z)))
+    (put 'project '(complex)
+         (fn [z] (project z)))
     (put 'make-from-real-imag 'complex
          (fn [x y] (tag (make-from-real-imag x y))))
     (put 'make-from-mag-ang 'complex
@@ -311,8 +316,7 @@
 (def tower  ['rational 'scheme-number 'complex])
 
 (defn raise [n]
-  (let [f {
-           'rational (fn [n]
+  (let [f {'rational (fn [n]
                        (let [[d n] (contents n)]
                          (* 1.0 (/ d n))))
            'scheme-number (fn [n]
@@ -332,3 +336,9 @@
     (if (< a b)
       (list (f n1 n2) n2)
       (list n1 (f n2 n1)))))
+
+(defn drop [num]
+  (let [n (atom num)]
+    (while (equ? @n (raise (project @n)))
+      (swap! n project))
+    @n))
