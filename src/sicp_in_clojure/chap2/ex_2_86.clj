@@ -1,4 +1,4 @@
-(ns sicp-in-clojure.chap2.ex-2-85
+(ns sicp-in-clojure.chap2.ex-2-86
   (:refer-clojure :exclude [get drop]))
 
 ;; Very useful debugging macro
@@ -42,7 +42,7 @@
 
 (defn type-tag [datum]
   (cond
-   (number? (? datum)) 'scheme-number
+   (number? datum) 'scheme-number
    (pair? datum) (first datum)
    :else (throw (Exception. (str "Bad tagged datum -- TYPE-TAG " datum)))))
 
