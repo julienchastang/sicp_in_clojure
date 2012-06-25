@@ -22,7 +22,7 @@
 ;;       (swap! balance - amount)
 ;;       (throw (Exception. "Insufficient funds")))))
 
-(defn make-account [balance]
+(defn ^:private make-account-helper [balance]
   {:withdraw
    (fn [amount]
      (if (>= @balance amount)
@@ -31,3 +31,19 @@
    :deposit
    (fn [amount]
      (swap! balance + amount))})
+
+(defn make-account [balance]
+  (make-account-helper (atom balance)))
+
+;; (def a (make-account 73))
+
+;; ;; almost OO style :-)
+
+;; ((a :withdraw) 11)
+
+;; ((a :deposit) 12)
+
+
+(defn make-accumulator [n]
+  (let [numb (atom n)]
+    (fn [num] (swap! numb +  num))))
